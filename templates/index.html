@@ -269,16 +269,10 @@
             var flag = false
             var configs = JSON.parse(localStorage.getItem("Settings"))
 
-            if(configs.humRec+configs.humVar > Number(document.getElementById('humidity').innerHTML) && configs.humRec-configs.humVar > Number(document.getElementById('humidity').innerHTML))
+            if(configs.humRec+configs.humVar > Number(document.getElementById('humidity').innerHTML))
                 flag = true
 
-            if(configs.humRec+configs.humVar > Number(document.getElementById('tempf').innerHTML) && configs.humRec-configs.humVar > Number(document.getElementById('tempf').innerHTML))
-                flag = true
-
-            if(String(configs.hourtTog).localeCompare('true') && Number(document.getElementById('rainin').innerHTML) <= 0)
-                flag = true
-
-            if(String(configs.dayTog).localeCompare('true') && Number(document.getElementById('dailyrainin').innerHTML) <= 0) 
+            if(configs.temRec+configs.tempVar < Number(document.getElementById('tempf').innerHTML))
                 flag = true
 
             if(flag)

@@ -29,27 +29,7 @@
     
 </div>
 <br>
-<div class="rounded border p-3 bg-light">
-    <div>
-        <h1>Configurações de Chuva</h1>
-    </div>
-    <div id="rainSettingsDiv" class="border p-3">
-        <div id="lastHourSettingsDiv" class="form-group form-check">
-            <form>
-                <label for="1hourrainToggleSettings">Chuva hora-hora</label>
-                <input type="checkbox" class="form-check-input" id="1hourrainToggleSettings" name="1hourrainToggleSettings" value="false">
 
-            </form>
-        </div>
-        <div id="last24HoursSettingsDiv" class="form-group form-check">
-            <form>
-                <label for="24hoursrainToggleSettings">Chuva nas ultimas 24 horas</label>
-                <input type="checkbox" class="form-check-input" id="24hoursrainToggleSettings" name="24hoursrainToggleSettings" value="false">
-            </form>
-        </div>
-    </div>
-    <br>
-</div>
 <br>
 <div id="buttonDiv">
     <button type="button" id="submitInputs" onclick="saveSettings()" class="btn btn-success">Guardar</button>
@@ -90,6 +70,7 @@
         }
 
         localStorage.setItem("Settings",JSON.stringify(config))
+        alert('As configurações foram salvas!')
 
     }
 

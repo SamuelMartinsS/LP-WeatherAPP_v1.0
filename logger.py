@@ -6,7 +6,7 @@ import requests
 import time
 from flask import Flask, jsonify
 
-debug = False
+debug = True
 
 urlCurr = "http://dataservice.accuweather.com/currentconditions/v1/274087/historical/24?apikey= ZuWR33RUX4BQXt6awK8jOoucnaqLwZ10 &details=True"
 class Logger(object):
