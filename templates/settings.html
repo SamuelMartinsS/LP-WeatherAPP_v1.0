@@ -1,0 +1,105 @@
+{% extends 'settingsBase.html'%}
+
+{% block main_settings %}
+<div class="rounded border p-3 bg-light">
+    <div >
+        <h1>Configurações Atmosféricas</h1>
+    </div>
+    <div id="atmSettingsDiv">
+        <br>
+        <h2>Humidade</h2>
+        <hr>
+        <div id="humiditySettingsDiv" class="border p-3"> 
+            <label for="humidityValueSettings">Humidade Recomendada</label>
+            <input type="number" class="form-control" name="humidityValueSettings" id="humidityValueSettings">
+            <label for="humidityVariationSettings">Variação de Humidade</label>
+            <input type="number" class="form-control" name="humidityVariationSettings" id="humidityVariationSettings">
+        </div>
+        <br>
+        <h2>Temperatura</h2>
+        <hr>
+        <div id="tempfSettingsDiv" class="border p-3">
+            <label for="temperatureValueSettings">Temperatura Recomendada</label>
+            <input type="number" class="form-control" name="temperatureValueSettings" id="temperatureValueSettings">
+            <label for="temperatureVariationSettings">Variação de Temperatura</label>
+            <input type="number" class="form-control" name="temperatureVariationSettings" id="temperatureVariationSettings">
+        </div>
+        <br>
+    </div>
+    
+</div>
+<br>
+<div class="rounded border p-3 bg-light">
+    <div>
+        <h1>Configurações de Chuva</h1>
+    </div>
+    <div id="rainSettingsDiv" class="border p-3">
+        <div id="lastHourSettingsDiv" class="form-group form-check">
+            <form>
+                <label for="1hourrainToggleSettings">Chuva hora-hora</label>
+                <input type="checkbox" class="form-check-input" id="1hourrainToggleSettings" name="1hourrainToggleSettings" value="false">
+
+            </form>
+        </div>
+        <div id="last24HoursSettingsDiv" class="form-group form-check">
+            <form>
+                <label for="24hoursrainToggleSettings">Chuva nas ultimas 24 horas</label>
+                <input type="checkbox" class="form-check-input" id="24hoursrainToggleSettings" name="24hoursrainToggleSettings" value="false">
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+<div id="buttonDiv">
+    <button type="button" id="submitInputs" onclick="saveSettings()" class="btn btn-success">Guardar</button>
+</div>  
+<br>
+
+<script>
+
+    function saveSettings(){    
+        
+        humRec = document.getElementById("humidityValueSettings").value
+        humVar = document.getElementById("humidityVariationSettings").value
+
+        tempRec = document.getElementById("temperatureValueSettings").value
+        tempVar = document.getElementById("temperatureVariationSettings").value
+
+        hourTog = document.getElementById("1hourrainToggleSettings")
+
+        if(hourTog.checked == true)
+            hourTog = "true"
+        else
+            hourTog = "false"
+
+        dayTog = document.getElementById("24hoursrainToggleSettings")
+
+        if(dayTog.checked == true)
+            dayTog = "true"
+        else
+            dayTog = "false"
+
+        var config = {
+            "humRec":humRec,
+            "humVar":humVar,
+            "tempRec":tempRec,
+            "tempVar":tempVar,
+            "hourTog":hourTog,
+            "dayTog":dayTog
+        }
+
+        localStorage.setItem("Settings",JSON.stringify(config))
+
+    }
+
+</script>
+{% endblock %}
+
+{%block stripts_settings %}
+   <!-- {{super()}}-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'logBase.html'%}
+
+{% block log_content %}
+<div class="rounded border p-3 bg-light">
+    <div >
+        <h1>Historico</h1>
+    </div>
+    <div id="logTableDiv">
+        <table id="logTable">
+
+            <tr>
+              <th>ID</th>
+              <th>Valor</th>
+              <th>Unidade</th>
+              <th>Timestamp</th>
+            </tr>
+
+          </table> 
+    </div>
+    
+</div>
+<br>
+<div id="buttonDiv">
+    <button type="button" id="clearTableButton" onclick="clearTable()" class="btn btn-alert">Limpar Historico</button>
+</div>  
+<br>
+
+<script>
+
+    function loadDatabase(){
+        
+    }
+
+</script>
+{% endblock %}
+
+{%block log_scripts %}
+   <!-- {{super()}}-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+{% endblock %}

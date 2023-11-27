@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<div id="regaDiv" class="rounded bg-info p-4">
+    <p id="controloDeRega" class="blockquote"></p>
+</div>
+
+<div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Atmospheric</h1>
+</div>
+<div class="row">
+    <div class="col">
+        <canvas id="atmChart"></canvas>
+    </div>
+    <div class="col-4">
+        <dl class="row mt-4">
+            <dt class="col-6">
+                Humidity
+            </dt>
+            <dd class="col-6" id="humidity"> {{ data['Humidity'] }}</dd>
+            <dt class="col-6">
+                Temperature ({{ data['TemperatureUnit'] }})
+            </dt>
+            <dd class="col-6" id="tempf">{{ data['Temperature'] }}</dd>
+
+            <dt class="col-6">
+                Pressure ({{ data['PressureUnit'] }})
+            </dt>
+            <dd class="col-6" id="pressure">{{ data['Pressure'] }} </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Wind</h1>
+</div>
+<div class="row">
+    <div class="col">
+        <canvas id="windChart"></canvas>
+    </div>
+    <div class="col-4">
+        <dl class="row mt-4">
+            <dt class="col-6">Inst direction (degrees)</dt>
+            <dd class="col-6" id="windir">{{ data['InstDirection'] }}</dd>
+
+            <dt class="col-6">Inst Speed ({{ data['InstSpeedUnit'] }})</dt>
+            <dd class="col-6" id="windspeed">{{ data['InstSpeed'] }}</dd>
+
+        </dl>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Rain</h1>
+</div>
+<div class="row">
+    <div class="col">
+        <canvas id="rainChart"></canvas>
+    </div>
+    <div class="col-4">
+        <dl class="row mt-4">
+            <dt class="col-6">Last hour</dt>
+            <dd class="col-6" id="rainin">{{ data['LastHour'] }}</dd>
+
+            <dt class="col-6">Last 24 hours</dt>
+            <dd class="col-6" id="dailyrainin">{{ data['Last24Hours'] }}</dd>
+        </dl>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        checkValues()
+
+        var windDirection = [0,45,90,135,180,225,270,315]
+        var windChart = new Chart(document.getElementById('windChart'), {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 20 }, (_, i) => i + 1), // Corrected the labels
+                datasets: [
+                    {
+                        label: 'Speed (k/h)',
+                        data: Array.from({ length: 20 },() => randomData(0,118,1)),
+                        backgroundColor: 'rgba(0, 0, 0, 0)',
+                        borderColor: '#f44336',
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Direction (º)',
+                        data: Array.from({ length: 20 },()=> randomElement()),
+                        backgroundColor: 'rgba(0, 0, 0, 0)',
+                        borderColor: '#2196f3',
+                        yAxisID: 'y1',
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                    },
+                    grid: {
+                        drawnOnChartArea: false,
+                    }
+                }
+            }
+        })
+
+        var atmChart = new Chart(document.getElementById('atmChart'), {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 20 }, (_, i) => i + 1),
+                datasets: [
+                    {
+                        label: 'Temperature (ºC)',
+                        data: Array.from({ length: 20 },() => randomData(-9,44,3)),
+                        backgroundColor: 'rgba(0, 0, 0, 0)',
+                        borderColor: '#f44336',
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Humidity (%RH)',
+                        data: Array.from({ length: 20 },() => randomData(1,80,4)),
+                        backgroundColor: 'rgba(0, 0, 0, 0)',
+                        borderColor: '#2196f3',
+                        yAxisID: 'y1',
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                    },
+                    grid: {
+                        drawnOnChartArea: false,
+                    }
+                }
+            }
+        })
+
+        var rainChart = new Chart(document.getElementById('rainChart'), {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 20 }, (_, i) => i + 1),
+                datasets: [
+                    {
+                        label: 'Rain (cm)',
+                        data: Array.from({ length: 20 },() => randomData(0,10,5)),
+                        backgroundColor: 'rgba(0, 0, 0, 0)',
+                        borderColor: '#f44336',
+                    },
+                ]
+            },
+        })
+
+
+        
+        function updateWindChart() {
+            const dataSpeed = Array.from({ length: 20 }, () => randomData(0, 118,1))          
+            const dataDirection = Array.from({ length: 20 }, randomElement())
+            
+            windChart.data.datasets[0].data = newDataSpeed
+            windChart.data.datasets[1].data = dataDirection
+
+            windChart.data.labels = Array.from({ length: 20 }, (_, i) => i + 1)
+
+            windChart.update()
+
+        }
+
+        
+        function updateAtmChart() {
+            const dataTemperature = Array.from({ length: 20 }, () => randomData(-9, 44,3))
+            const dataHumidity = Array.from({ length: 20 }, () => randomData(1, 80,4))
+
+            atmChart.data.datasets[0].data = dataTemperature
+            atmChart.data.datasets[1].data = dataHumidity
+
+            atmChart.data.labels = Array.from({ length: 20 }, (_, i) => i + 1)
+
+            atmChart.update()
+
+        }
+
+        
+        function updateRainChart() {
+            const dataRain = Array.from({ length: 20 }, () => randomData(0, 10,5))
+
+            rainChart.data.datasets[0].data = dataRain
+
+            rainChart.data.labels = Array.from({ length: 20 }, (_, i) => i + 1)
+
+            rainChart.update()
+        }
+
+
+        
+        function randomData(min,max,sensor) {
+            const newValue =  Math.random() * (max - min) + min
+            fetch('http://127.0.0.1:5000/addValue', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            body: JSON.stringify({
+                query:"INSERT INTO valores (id_valor, sensor, valor,timestp) VALUES ((SELECT IFNULL(MAX(id_valor) + 1, 1) FROM valores), "+sensor+", '"+newValue+"',strftime('%Y-%m-%d %H:%M:%S', 'now'));",
+            })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+            return newValue;
+        }
+
+        function randomElement(){
+            var randomIndex = Math.floor(Math.random() * windDirection.length)
+            fetch('http://127.0.0.1:5000/addValue', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            body: JSON.stringify({
+                query:"INSERT INTO valores (id_valor, sensor, valor,timestp) VALUES ((SELECT IFNULL(MAX(id_valor) + 1, 1) FROM valores), '2', '"+windDirection[randomIndex]+"',strftime('%Y-%m-%d %H:%M:%S', 'now'));",
+            })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+            return windDirection[randomIndex]
+        }
+
+        function checkValues(){
+            var flag = false
+            var configs = JSON.parse(localStorage.getItem("Settings"))
+
+            if(configs.humRec+configs.humVar > Number(document.getElementById('humidity').innerHTML) && configs.humRec-configs.humVar > Number(document.getElementById('humidity').innerHTML))
+                flag = true
+
+            if(configs.humRec+configs.humVar > Number(document.getElementById('tempf').innerHTML) && configs.humRec-configs.humVar > Number(document.getElementById('tempf').innerHTML))
+                flag = true
+
+            if(String(configs.hourtTog).localeCompare('true') && Number(document.getElementById('rainin').innerHTML) <= 0)
+                flag = true
+
+            if(String(configs.dayTog).localeCompare('true') && Number(document.getElementById('dailyrainin').innerHTML) <= 0) 
+                flag = true
+
+            if(flag)
+                document.getElementById('controloDeRega').innerHTML = 'O seu sistema de rega está ativo!'
+            else
+                document.getElementById('controloDeRega').innerHTML = 'O seu sistema de rega NÃO está ativo!'
+
+        }
+        
+    </script>
+   
+{% endblock %}

@@ -1,0 +1,7 @@
+Comandos
+# Inserir Sensor
+Insert Into sensor (id_sensor,unidade) values (1,'ºC');
+Insert Into sensor (id_sensor,unidade) values (2,'RH');
+Insert Into sensor (id_sensor,unidade) values (3,'K/h');
+Insert Into sensor (id_sensor,unidade) values (4,'º');
+Insert Into sensor (id_sensor,unidade) values (5,'cm');
